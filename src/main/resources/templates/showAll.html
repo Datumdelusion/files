@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>用户文件列表</title>
+    </head>
+    <body>
+
+        <h1>
+            用户文件系统，欢迎:
+            <span th:if="${session.user!=null}" th:text="${session.user.username}"></span>
+        </h1>
+        <h3>文件列表:</h3>
+        <table border="1px">
+            <tr>
+                <th>ID</th>
+                <th>原始名称</th>
+                <th>新名称</th>
+                <th>文件后缀</th>
+                <th>储存路径</th>
+                <th>文件大小</th>
+                <th>类型</th>
+                <th>是否为图片</th>
+                <th>下载次数</th>
+                <th>上传时间</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="file,fileStat: ${files}">
+                <td><span th:text="${file.getId()}"></span> </td>
+                <td><span th:text="${file.getOldFileName()}"></span></td>
+                <td><span th:text="${file.getNewFileName()}"></span></td>
+                <td><span th:text="${file.getExt()}"></span></td>
+                <td><span th:text="${file.getPath()}"></span></td>
+                <td><span th:text="${file.getSize()}"></span></td>
+                <td><span th:text="${file.getType()}"></span></td>
+                <td>
+                    <img style="width: 100px;height: 40px" th:if="${file.isImg()==true}" th:src="${#servletContext.contextPath}+${file.getPath()}+'/'+${file.getNewFileName}"/>
+                    <span th:if="${file.isImg()==false}" th:text="否"></span>
+                </td>
+                <td><span th:text="${file.getDownCounts()}"></span></td>
+                <td><span th:text="${file.getUploadTime()}"></span></td>
+                <td>
+                    <a th:href="@{/file/download(id=${file.getId},openStyle='inline')}">在线打开</a>
+                    <a th:href="@{/file/download(id=${file.getId})}">下载</a>
+                    <a th:href="@{/file/delete(id=${file.getId})}">删除</a>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <h3>上传文件:</h3>
+        <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
+            <input type="file" name="upload">
+            <input type="submit" value="上传">
+        </form>
+    </body>
+</html>

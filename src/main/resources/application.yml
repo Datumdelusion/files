@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: files
+    #在后面微服务中至关重要
+  thymeleaf:
+    cache: false
+    #开发过程中建议关闭thymeleaf缓存
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver #8.0数据库版本
+    url: jdbc:mysql://localhost:3306/files?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: password
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+server:
+  port: 8989
+  servlet:
+    context-path: /files
+#更改服务器名称
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.spring.files.entity
